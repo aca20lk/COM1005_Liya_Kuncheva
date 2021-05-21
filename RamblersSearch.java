@@ -12,7 +12,7 @@ public class RamblersSearch extends Search {
     return goal;
   }
 
-  public RamblersSearch(TerrainMap m, /*String g*/Coords g){
+  public RamblersSearch(TerrainMap m, Coords g){
     map=m;
     goal=g;
   }
