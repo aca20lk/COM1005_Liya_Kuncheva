@@ -19,7 +19,7 @@ public class RamblersState extends SearchState{
 
   // goalPredicate
   public boolean goalPredicate(Search searcher) {
-    RamblersSearch rsearcher = (RamblersSeacrh) searcher;
+    RamblersSearch rsearcher = (RamblersSearch) searcher;
     Coords tar=rsearcher.getGoal(); // get target coordinates
     return (coordinates.getx() == tar.getx() && coordinates.gety() == tar.gety());
   }
@@ -27,9 +27,70 @@ public class RamblersState extends SearchState{
   // getSuccessors
   public ArrayList<SearchState> getSuccessors (Search searcher) {
     RamblersSearch rsearcher = (RamblersSearch) searcher;
-    TerrainMap map = rsearcher.getMap();
+    TerrainMap tmap = rsearcher.getMap();
+    int[][] tmapv = tmap.getTmap();
     ArrayList<SearchState> succs = new ArrayList();
+    //ArrayList<MapLink> links = map.getLinks(coordinates);
     
+    Coords c = this.getCoordinates();
+    int x = c.getx();
+    int y = c.gety();
+
+    int lc = 0;
+
+    int width = tmap.getWidth();
+    int depth = tmap.getDepth();
+
+    Coords newc;
+
+    if(x > 1 && x < width -1){
+        newc = new Coords(x-1,y);
+        if(tmapv[x-1][y]<=tmapv[x][y]){
+            lc = 1;
+        }
+        else{
+            lc = 1 + tmapv[x-1][y] - tmapv[x][y];
+        }
+        succs.add(new RamblersState(newc,lc,1));
+    }
+    
+    if(x > 1 && x < width -1){
+        newc = new Coords(x+1,y);
+        if( x > 1 && x < width -1 && tmapv[x+1][y]<=tmapv[x][y]){
+            lc = 1;
+        }
+        else{
+            lc = 1 + tmapv[x+1][y] - tmapv[x][y];
+        }
+        succs.add(new RamblersState(newc,lc,1));
+    }
+    
+
+    if(y > 1 && y < width -1){
+        newc = new Coords(x,y-1);
+        if( y > 1 && y < depth -1 && tmapv[x][y-1]<=tmapv[x][y]){
+            lc = 1;
+        }
+        else{
+            lc = 1 + tmapv[x][y-1] - tmapv[x][y];
+        }
+        succs.add(new RamblersState(newc,lc,1));
+    }
+    
+
+    if(y > 1 && y < width -1){
+        newc = new Coords(x,y+1);
+        if( y > 1 && y < depth -1 && tmapv[x][y+1]<=tmapv[x][y]){
+            lc = 1;
+        }
+        else{
+            lc = 1 + tmapv[x][y+1] - tmapv[x][y];
+        }
+        succs.add(new RamblersState(newc,lc,1));
+    }
+    
+    return succs;
+
   }
 
   // sameState
